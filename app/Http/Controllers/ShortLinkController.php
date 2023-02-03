@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ShortLink;
 use App\Http\Requests\StoreShortLinkRequest;
 use App\Http\Requests\UpdateShortLinkRequest;
+use Carbon\Carbon;
 
 class ShortLinkController extends Controller
 {
@@ -40,11 +41,12 @@ class ShortLinkController extends Controller
     {
         ShortLink::create([
            'link'=>$request->link ,
-            'code'=>str_random(6)
+            'code'=>str_random(6),
+            'days'=>$request->day
         ]);
 
         return redirect()
-            ->route('generate-shorten-link.index')
+            ->route('index')
             ->with('success', 'Shorten Link Generated Successfully!');
     }
 
@@ -57,7 +59,20 @@ class ShortLinkController extends Controller
     public function show($code)
     {
         $shortLink = ShortLink::whereCode($code)->firstOrFail();
-        return redirect($shortLink->link);
+
+        $date   = Carbon::parse($shortLink->created_at);
+        $now    = Carbon::now();
+        $diff = $date->diffInDays($now);
+        if ($diff > $shortLink->days)
+        {
+            return redirect()
+                ->route('index')
+                ->with('expired', 'Shorten Link expired!');
+        }
+        $shortLink->increment('hits');
+        return view('redirect',[
+            'link'=>$shortLink->link
+        ]);
     }
 
     /**

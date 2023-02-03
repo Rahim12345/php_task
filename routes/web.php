@@ -3,9 +3,9 @@
 use App\Http\Controllers\ShortLinkController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
 
 //Route::get('generate-shorten-link', 'ShortLinkController@index');
@@ -13,4 +13,6 @@ Route::get('/', function () {
 //
 //Route::get('{code}', 'ShortLinkController@shortenLink')->name('shorten.link');
 
-Route::resource('generate-shorten-link',ShortLinkController::class);
+Route::resource('/',ShortLinkController::class);
+
+Route::get('{code}', [ShortLinkController::class,'show'])->name('show');

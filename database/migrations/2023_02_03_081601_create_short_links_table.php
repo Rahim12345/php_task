@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('code');
             $table->string('link');
+            $table->tinyInteger('days');
+            $table->integer('hits')->default(0);
             $table->timestamps();
         });
     }

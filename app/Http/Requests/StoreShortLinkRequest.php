@@ -24,7 +24,16 @@ class StoreShortLinkRequest extends FormRequest
     public function rules()
     {
         return [
-            'link' => 'required|url'
+            'link' => 'required|url',
+            'day'=>'integer|min:1|max:365',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'link' =>'URL',
+            'day'=>'Day',
         ];
     }
 }

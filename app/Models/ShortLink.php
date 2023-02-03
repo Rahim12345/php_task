@@ -10,6 +10,9 @@ class ShortLink extends Model
     use HasFactory;
 
     protected $fillable = [
-        'code', 'link'
+        'code',
+        'link',
+        'days',
+        'hits'
     ];
 }
